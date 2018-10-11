@@ -14,7 +14,47 @@
 <div id="lyrics"></div>
 
 <script>
-	// Complete this section and create a CSS file named style.css
+	var video = document.getElementById('wedo');
+  var lyrics = document.getElementById('lyrics');
+
+  video.addEventListener("timeupdate", function(ev){
+    if (ev.target.currentTime > 4.0){
+      lyrics.innerHTML = "Who controls the British crown?";
+    }
+    if (video.currentTime > 6.0){
+      lyrics.innerHTML = "Who keeps the metric system down?";
+    }
+    if (video.currentTime > 8.0){
+      lyrics.innerHTML = "We do, we do!";
+    }
+    if (video.currentTime > 12.0){
+      lyrics.innerHTML = "Who keeps Atlantis off the maps?";
+    }
+    if (video.currentTime > 15.0){
+      lyrics.innerHTML = "Who keeps the Martians under wraps?";
+    }
+    if (video.currentTime > 17.0){
+      lyrics.innerHTML = "We do, we do!";
+    }
+    if (video.currentTime > 21.0){
+      lyrics.innerHTML = "Who holds back the electric car?";
+    }
+    if (video.currentTime > 25.0){
+      lyrics.innerHTML = "Who makes Steve Guttenberg a star?";
+    }
+    if (video.currentTime > 29.0){
+      lyrics.innerHTML = "We do, we do!";
+    }
+    if (video.currentTime > 33.0){
+      lyrics.innerHTML = "Who robs cavefish of their sight?";
+    }
+    if (video.currentTime > 36.0){
+      lyrics.innerHTML = "Who rigs every Oscar night?";
+    }
+    if (video.currentTime > 38.0){
+      lyrics.innerHTML = "We do, we do!";
+    }
+  });
 </script>
 </body>
-</html>	
+</html>

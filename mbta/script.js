@@ -28,50 +28,70 @@ var places = [ SouthStation, Andrew, PorterSquare, HarvardSquare,
                CentralSq, Braintree ];
 
 var map, userWindow;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: SouthStation.position,
-          zoom: 10
-        });
-        userWindow = new google.maps.InfoWindow;
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: SouthStation.position,
+    zoom: 11
+  });
+  userWindow = new google.maps.InfoWindow;
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
 
-            map.setCenter(pos);
-            userWindow.setPosition(pos);
-            userWindow.setContent('Location found.');
-            var userMarker = new google.maps.Marker({position: pos, map: map});
-            userMarker.addListener('click', function() {
-              userWindow.open(map);
-            });
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
+      map.setCenter(pos);
+      map.setZoom(13);
+      userWindow.setPosition(pos);
+      var closestStation = findDistance(pos);
+      userWindow.setContent('Closest station is ' + closestStation.stop.stop_id + ' and it is ' + closestStation.dist + ' miles away.' );
+      var userMarker = new google.maps.Marker({position: pos, map: map});
+      userMarker.addListener('click', function() {
+        userWindow.open(map);
+      });
+    }, function() {
+      handleLocationError(true, userWindow, map.getCenter());
+    });
+  } else {
+    handleLocationError(false, userWindow, map.getCenter());
+  }
 
-         var icon = 'http://maps.google.com/mapfiles/kml/pal5/icon19.png';
-         places.forEach(function(place) {
-            var marker = new google.maps.Marker({
-              position: place.position,
-              icon: icon,
-              map: map
-            });
-          });
-      }
+   var icon = 'http://maps.google.com/mapfiles/kml/pal5/icon19.png';
+   places.forEach(function(place) {
+      var marker = new google.maps.Marker({
+        position: place.position,
+        icon: icon,
+        map: map
+      });
+    });
+}
 
+//function: distance between to places
+function findDistance(userLocation){
+  var current;
+  var smallestdist = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userLocation.lat, userLocation.lng), new google.maps.LatLng(SouthStation.position.lat, SouthStation.position.lng));
+  var closest = { dist: smallestdist, stop: SouthStation };
+  places.forEach(function(place) {
+    current = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userLocation.lat, userLocation.lng), new google.maps.LatLng(place.position.lat, place.position.lng));
+    if (current < smallestdist) {
+      closest.stop = place;
+      smallestdist = current;
+    }
+  });
+  closest.dist = metersToMiles(smallestdist);
+  return closest;
+}
 
+function metersToMiles(meters) {
+  return meters/1609.344;
+}
 
-      // function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-      //   //infoWindow.setPosition(pos);
-      //   // infoWindow.setContent(browserHasGeolocation ?
-      //   //                       'Error: The Geolocation service failed.' :
-      //   //                       'Error: Your browser doesn\'t support geolocation.');
-      //   // infoWindow.open(map);
-      // }
+function handleLocationError (browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: The Geolocation service failed.' :
+                          'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+}

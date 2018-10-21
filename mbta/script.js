@@ -47,6 +47,17 @@ function initMap() {
       var closestStation = findDistance(pos);
       userWindow.setContent('Closest station is ' + closestStation.stop.stop_id + ' and it is ' + closestStation.dist + ' miles away.' );
       var userMarker = new google.maps.Marker({position: pos, map: map});
+      var userToStation = [
+        pos, closestStation.stop.position
+      ];
+      var lineToStation = new google.maps.Polyline({
+            path: userToStation,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+      lineToStation.setMap(map);
       userMarker.addListener('click', function() {
         userWindow.open(map);
       });
@@ -65,8 +76,6 @@ function initMap() {
         map: map
       });
     });
-    //alewife, davis, porter, harvard, central, kendalmit, charlesmgh, park st,
-    //downtown crossing, south station, broadway, andrew, jfkumass
     var redline = [
       Alewife.position, Davis.position, PorterSquare.position,
       HarvardSquare.position, CentralSq.position, KendallMIT.position,
@@ -108,7 +117,6 @@ function initMap() {
 
 }
 
-//function: distance between to places
 function findDistance(userLocation){
   var current;
   var smallestdist = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userLocation.lat, userLocation.lng), new google.maps.LatLng(SouthStation.position.lat, SouthStation.position.lng));

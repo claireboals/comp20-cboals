@@ -41,7 +41,6 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-
       map.setCenter(pos);
       map.setZoom(13);
       userWindow.setPosition(pos);
@@ -66,6 +65,47 @@ function initMap() {
         map: map
       });
     });
+    //alewife, davis, porter, harvard, central, kendalmit, charlesmgh, park st,
+    //downtown crossing, south station, broadway, andrew, jfkumass
+    var redline = [
+      Alewife.position, Davis.position, PorterSquare.position,
+      HarvardSquare.position, CentralSq.position, KendallMIT.position,
+      CharlesMGH.position, ParkStreet.position, DtownCross.position,
+      SouthStation.position, Broadway.position, Andrew.position, JFKUmass.position
+    ];
+    var rbranch1 = [
+      JFKUmass.position, NorthQuincy.position, Wollaston.position, QuincyC.position,
+      QuincyA.position, Braintree.position
+    ];
+    var rbranch2 = [
+      JFKUmass.position, SavinHill.position, FieldsCorner.position,
+      Shawmut.position, Ashmont.position
+    ]
+    var r1 = new google.maps.Polyline({
+          path: redline,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+    var r2 = new google.maps.Polyline({
+          path: rbranch1,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+    var r3 = new google.maps.Polyline({
+          path: rbranch2,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+    r1.setMap(map);
+    r2.setMap(map);
+    r3.setMap(map);
+
 }
 
 //function: distance between to places

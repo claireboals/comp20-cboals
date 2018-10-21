@@ -27,13 +27,13 @@ var places = [ SouthStation, Andrew, PorterSquare, HarvardSquare,
                QuincyC, QuincyA, Ashmont, Wollaston, FieldsCorner,
                CentralSq, Braintree ];
 
-var map;
+var map, userWindow;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           center: SouthStation.position,
           zoom: 10
         });
-
+        userWindow = new google.maps.InfoWindow;
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -41,8 +41,14 @@ var map;
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
+
             map.setCenter(pos);
-            var marker = new google.maps.Marker({position: pos, map: map});
+            userWindow.setPosition(pos);
+            userWindow.setContent('Location found.');
+            var userMarker = new google.maps.Marker({position: pos, map: map});
+            userMarker.addListener('click', function() {
+              userWindow.open(map);
+            });
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });

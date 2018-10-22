@@ -24,8 +24,8 @@ var Braintree = { position: {lat: 42.2078543, lng:-71.0011385}, 'stop_id': "plac
 var places = [ SouthStation, Andrew, PorterSquare, HarvardSquare,
                JFKUmass, SavinHill, ParkStreet, Broadway, NorthQuincy,
                Shawmut, Davis, Alewife, KendallMIT, CharlesMGH, DtownCross,
-               QuincyC, QuincyA, Ashmont, Wollaston, FieldsCorner,
-               CentralSq, Braintree ];
+               QuincyC, QuincyA, Ashmont, FieldsCorner,
+               CentralSq, Braintree, Wollaston ];
 
 var map, userWindow;
 function initMap() {
@@ -80,12 +80,12 @@ function initMap() {
         var API_KEY = '287ad0be033c4ec4923f66fa3e77c532';
         var STOP_ID = place.stop_id;
         var text;
-        const url="https://api-v3.mbta.com/predictions?filter[route]=Red&filter[stop]=" + STOP_ID + "&page[offset]=0&sort=departure_time&api_key=" + API_KEY;
+        const url="https://api-v3.mbta.com/predictions?filter[route]=Red&filter[stop]=" + STOP_ID + "&page[offset]=0&sort=arrival_time&api_key=" + API_KEY;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 text = JSON.parse(this.responseText);
-                var schedule = 'Next trains arrival time: ' + text.data[0].attributes.arrival_time;
+                var schedule = 'Next trains arrival time: ' + text.data[0].attributes.arrival_time + '<br>' + 'Next trains departure time: ' + text.data[0].attributes.departure_time;
                 console.log(text);
                 tWindow.setContent(schedule);
             }
@@ -96,15 +96,6 @@ function initMap() {
       });
       //set content to mbta schedule
     });
-
-
-    // Http.onreadystatechange = function (e) {
-    //   schedule = JSON.parse(this.responseText);
-    //   //console.log(Http.responseText);
-    // }
-    // Http.open("GET", url, true);
-    // Http.send();
-    // console.log(schedule);
     var redline = [
       Alewife.position, Davis.position, PorterSquare.position,
       HarvardSquare.position, CentralSq.position, KendallMIT.position,

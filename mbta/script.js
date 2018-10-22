@@ -34,7 +34,6 @@ function initMap() {
     zoom: 11
   });
   userWindow = new google.maps.InfoWindow;
-  // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var pos = {
@@ -53,7 +52,7 @@ function initMap() {
       var lineToStation = new google.maps.Polyline({
             path: userToStation,
             geodesic: true,
-            strokeColor: '#FF0000',
+            strokeColor: '#4286f4',
             strokeOpacity: 1.0,
             strokeWeight: 2
           });
@@ -75,7 +74,37 @@ function initMap() {
         icon: icon,
         map: map
       });
+      var tWindow = new google.maps.InfoWindow;
+      tWindow.setPosition(place.position);
+      marker.addListener('click', function() {
+        var API_KEY = '287ad0be033c4ec4923f66fa3e77c532';
+        var STOP_ID = place.stop_id;
+        var text;
+        const url="https://api-v3.mbta.com/predictions?filter[route]=Red&filter[stop]=" + STOP_ID + "&page[offset]=0&sort=departure_time&api_key=" + API_KEY;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                text = JSON.parse(this.responseText);
+                var schedule = 'Next trains arrival time: ' + text.data[0].attributes.arrival_time;
+                console.log(text);
+                tWindow.setContent(schedule);
+            }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+        tWindow.open(map);
+      });
+      //set content to mbta schedule
     });
+
+
+    // Http.onreadystatechange = function (e) {
+    //   schedule = JSON.parse(this.responseText);
+    //   //console.log(Http.responseText);
+    // }
+    // Http.open("GET", url, true);
+    // Http.send();
+    // console.log(schedule);
     var redline = [
       Alewife.position, Davis.position, PorterSquare.position,
       HarvardSquare.position, CentralSq.position, KendallMIT.position,

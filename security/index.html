@@ -41,13 +41,14 @@
           that is stored could alter the database and contaminate data.</li>
           <li>Location: Server page in app.post /submit </li>
           <li>Severity: This is a very severe issue since any user may input script
-          that will affect all the data stored in the database.</li>
+          that will affect all the data stored in the database. This also means
+          that fraudulent data is getting permanently stored in the database.</li>
           <li>How did I find it?: I found this issue by reading the server-side
             code of the site.</li>
           <li>Proof of vulnerability: This is a very common security vulnerability
           that is widely known to cause problems.</li>
           <li>Resolution: Checks on input should be done in the server-side code
-          before the user's input is used, stored, or displayed anywhere.</li>
+          before the user's input is stored in the database.</li>
         </ol>
     <li>Cross Site Scripting (3)</li>
         <ol>

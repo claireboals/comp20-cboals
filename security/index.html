@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+  <title>Security Analysis</title>
+  <meta charset="utf-8" />
+</head>
+
+<body>
+  <p><strong>Introduction:</strong> I am to analyze the security vulnerabilities
+    of a 2048 Game Server created by Ming Chow. </p>
+  <p><strong>Methodology:</strong> I used curl and read the code to find
+    these vulnerabilities. </p>
+  <p><strong>Abstract of findings:</strong> I mostly found vulnerabilities
+    related to user input, where any user may be able to affect every other
+    user's experience of the website. All users are subject to fraudulent content,
+    popup messages, information stolen through cookies, and more.</p>
+  <strong>Issues found:</strong>
+  <ol>
+    <li>Cross Site Scripting (1)</li>
+        <ol>
+          <li>Issue: In the server's app.post /submit section, the username
+          is taken from the html (var username = request.body.username;) and
+          then stored in database and displayed. </li>
+          <li>Location: Server page in app.post /submit </li>
+          <li>Severity: This is a very severe issue since any user may input script
+          that will affect all other user's that visit the page. This opens
+          up the site to possibly letting information be stolen from other users
+          and displaying fraudulent content.</li>
+          <li>How did I find it?: I found this issue by reading the server-side
+            code of the site.</li>
+          <li>Proof of vulnerability: This is a very common security vulnerability
+          that is widely known to cause problems.</li>
+          <li>Resolution: Checks on input should be done in the server-side code
+          before the user's input is used or stored.</li>
+        </ol>
+    <li>Cross Site Scripting (2)</li>
+        <ol>
+          <li>Issue: In the server's app.post /submit section, the username
+          that is stored could alter the database and contaminate data.</li>
+          <li>Location: Server page in app.post /submit </li>
+          <li>Severity: This is a very severe issue since any user may input script
+          that will affect all the data stored in the database.</li>
+          <li>How did I find it?: I found this issue by reading the server-side
+            code of the site.</li>
+          <li>Proof of vulnerability: This is a very common security vulnerability
+          that is widely known to cause problems.</li>
+          <li>Resolution: Checks on input should be done in the server-side code
+          before the user's input is used, stored, or displayed anywhere.</li>
+        </ol>
+    <li>Cross Site Scripting (3)</li>
+        <ol>
+          <li>Issue: In the server's app.get section, the username
+          that is returned could alter the website or contain script that alters
+          the site.</li>
+          <li>Location: Server page in app.post /get </li>
+          <li>Severity: This is a very severe issue since any user may input script
+          that will affect all the data stored in the database.</li>
+          <li>How did I find it?: I found this issue by reading the server-side
+            code of the site.</li>
+          <li>Proof of vulnerability: This is a very common security vulnerability
+          that is widely known to cause problems.</li>
+          <li>Resolution: Checks on this data should be done before it gets displayed
+          in app.get. Otherwise, this function is basically displaying fraudulent
+          data to users and opening them up to have data stolen through cookies or
+          to receiving annoying messages.</li>
+        </ol>
+  </ol>
+</body>
+</html>
